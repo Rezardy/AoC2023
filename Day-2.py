@@ -5,9 +5,7 @@ start = question.split("\r\n")
 print(start)
 #inputs readable now
 
-def Part1(ses):
-    global game
-    global result
+def Part1(ses, gameid):
     for ses in session:
         color = ses.split(", ") #Individual colors
         possible = True
@@ -21,17 +19,14 @@ def Part1(ses):
                 possible = False
         if not possible:
             return 0
-    if possible:
-        return int(game[0].strip("Game "))
+    return int(gameid)
 
 def Part2(ses):
-    red = 0
-    blue = 0
-    green = 0
+    red, blue, green = 0, 0, 0
     for ses in session:
         color = ses.split(", ") #Individual colors
         for c in color:
-            #If impossible, its not possible
+            #If there's more, update most.
             if "red" in c:
                 if int(c.strip(" red")) > red:
                     red = int(c.strip(" red"))
@@ -43,13 +38,11 @@ def Part2(ses):
                     green = int(c.strip(" green"))
     return red * blue * green
     
-p1res = 0
-p2res = 0
+p1res, p2res = 0, 0
 for game in start:
-    game = game.split(": ") #GameID is in index 0
+    game = game.split(": ")
+    gameid = game[0].split(" ")[1] #GameID
     session = game[1].split("; ") #Sessions
-    #print(game)   #Debug
-    #print(session) #Debug
-    p1res += Part1(session) #Less clutter
+    p1res += Part1(session, gameid) #Less clutter
     p2res += Part2(session) #Less clutter
 print(p1res, p2res)
